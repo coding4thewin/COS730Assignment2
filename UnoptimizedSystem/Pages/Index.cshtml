@@ -1,0 +1,13 @@
+﻿@page
+@model IndexModel
+@{
+    ViewData["Title"] = "Submit your research";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Submit Your research</h1>
+    <form asp-controller="Submission" asp-action="Submit" method="post" enctype="multipart/form-data">
+        <input type="file" name="File"/>
+        <button type="submit">Submit</button>
+    </form>
+</div>
