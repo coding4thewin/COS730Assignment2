@@ -1,6 +1,4 @@
-﻿@page
-@model IndexModel
-@{
+﻿@{
     ViewData["Title"] = "Submit your research";
 }
 
@@ -9,19 +7,19 @@
     <form asp-controller="Submission" asp-action="Submit" method="post" enctype="multipart/form-data">
         <label>
             Name
-            <input type="text" name="Name"/>
+            <input type="text" name="Name" />
         </label>
         <label>
             Surname
-            <input type="text" name="Surname"/>
+            <input type="text" name="Surname" />
         </label>
         <label>
             Research Institution
-            <input type="text" name="ResearchInstitution"/>
+            <input type="text" name="ResearchInstitution" />
         </label>
         <label>
             Research Paper
-            <input type="file" name="File"/>
+            <input type="file" name="File" />
         </label>
         <button type="submit">Submit</button>
     </form>

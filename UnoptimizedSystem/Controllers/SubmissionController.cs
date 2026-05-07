@@ -14,11 +14,11 @@ namespace UnoptimizedSystem.Controllers
         }
 
         [HttpPost("submit")]
-        public string Submit([FromForm] SubmissionModel submission)
+        public IActionResult Submit([FromForm] SubmissionModel submission)
         {
             Console.WriteLine("submission:");
             Console.WriteLine(submission);
-            return "Submission received";
+            return View("");
         }
     }
 }

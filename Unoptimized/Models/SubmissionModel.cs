@@ -1,4 +1,4 @@
-﻿namespace UnoptimizedSystem.Classes
+﻿namespace Unoptimized.Models
 {
     public class SubmissionModel
     {
