@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace Unoptimized.Classes
+namespace Original.Classes
 {
     public class ReviewerManager
     {

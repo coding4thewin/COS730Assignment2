@@ -1,6 +1,6 @@
 ﻿using Microsoft.Data.SqlClient;
 
-namespace Unoptimized.Classes
+namespace Original.Classes
 {
     public class Reviewer
     {
@@ -27,7 +27,7 @@ namespace Unoptimized.Classes
             using SqlConnection connection = new SqlConnection(_connectionString);
             await connection.OpenAsync();
 
-            string query = "INSERT INTO TABLE Review (SubmissionId, ReviewerId, Complete) VALUES (@SubmissionId, @ReviewerId, @Complete)";
+            string query = "INSERT INTO Review (SubmissionId, ReviewerId, Complete) VALUES (@SubmissionId, @ReviewerId, @Complete)";
 
             using SqlCommand command = new SqlCommand(query, connection);
 

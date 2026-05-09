@@ -1,12 +1,13 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Unoptimized.Classes
+namespace Original.Classes
 {
     public class EvaluationManager
     {
         private static Random _random = new Random();
+        private static NotificationService _notificationService = new NotificationService();
 
-        public void StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string connectionString)
+        public static void StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string researcherEmail, string connectionString)
         {
             var scores = new List<double>();
             foreach (var reviewer in reviewers)
@@ -18,15 +19,40 @@ namespace Unoptimized.Classes
 
             double average = CalculateAverage(scores);
             bool hasConsensus = CheckConsensus(scores);
+            string submissionStatus = ApplyRules(average, hasConsensus);
+
+            if (submissionStatus == "Needs revision")
+            {
+                _notificationService.NotifyRevision(researcherEmail, "Your submission needs revision");
+            }
+            else if (submissionStatus == "Rejected")
+            {
+                _notificationService.NotifyRejection(researcherEmail, "Your submission was rejected");
+            }
+            else if (submissionStatus.Length > 0)
+            {
+                _notificationService.NotifyAcceptance(researcherEmail, "Your submission was accepted");
+            }
 
         }
 
-        private double CalculateAverage(IEnumerable<double> scores)
+        private static string ApplyRules(double average, bool hasConsensus)
+        {
+            if (!hasConsensus)
+            {
+                return "Needs revision";
+            }
+            if (average < 50)
+                return "Rejected";
+
+            return "Accepted";
+        }
+        private static double CalculateAverage(IEnumerable<double> scores)
         {
             return scores.Sum() / scores.Count();
         }
 
-        private bool CheckConsensus(IEnumerable<double> scores)
+        private static bool CheckConsensus(IEnumerable<double> scores)
         {
             double passMark = 50.0;
             if (scores.ElementAt(0) >= passMark)
@@ -50,7 +76,7 @@ namespace Unoptimized.Classes
             return true;
         }
 
-        public double SubmitScore(Reviewer reviewer)
+        public static double SubmitScore(Reviewer reviewer)
         {
             return _random.NextDouble() * 100;
         }

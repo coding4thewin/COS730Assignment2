@@ -1,9 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Data.SqlClient;
-using Unoptimized.Models;
-using Unoptimized.Classes;
+using Original.Models;
+using Original.Classes;
 
-namespace Unoptimized.Controllers
+namespace Original.Controllers
 {
     [ApiController]
     [Route("api/[controller]")]
@@ -37,6 +37,9 @@ namespace Unoptimized.Controllers
                 {
                     reviewer.AssignReview(submissionId);
                 }
+
+                EvaluationManager.StartEvaluation(filteredReviewers, submissionId, submission.Email, _connectionString);
+                
 
                 return View("Result");
             }

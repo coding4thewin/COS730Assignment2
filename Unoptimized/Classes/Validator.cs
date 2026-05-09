@@ -1,6 +1,6 @@
-﻿using Unoptimized.Models;
+﻿using Original.Models;
 
-namespace Unoptimized.Classes
+namespace Original.Classes
 {
     public class Validator
     {

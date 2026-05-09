@@ -1,4 +1,4 @@
-namespace Unoptimized.Models
+namespace Original.Models
 {
     public class ErrorViewModel
     {
