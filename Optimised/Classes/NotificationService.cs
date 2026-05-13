@@ -39,14 +39,16 @@ namespace Optimised.Classes
             _client.Credentials = new NetworkCredential(_clientAddress, "ixamrnmusolvjvgi");
         }
 
-        public void NotifyAcceptance(string emailAddress, string message)
+        public void NotifySubmissionStatus(string submissionStatus, string emailAddress, string message)
         {
             var sender = new MailAddress(_clientAddress);
             var recipient = new MailAddress(emailAddress);
             var mailMessage = new MailMessage(sender, recipient);
             mailMessage.Body = message;
             mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.Subject = "Your submission has been accepted.";
+            mailMessage.Subject = $"Submission Status: {submissionStatus}";
+
+            
 
             _client.Send(mailMessage);
 
@@ -64,31 +66,6 @@ namespace Optimised.Classes
 
             _client.Send(mailMessage);
 
-            Console.WriteLine(message);
-        }
-        public void NotifyRejection(string emailAddress, string message)
-        {
-            var sender = new MailAddress(_clientAddress);
-            var recipient = new MailAddress(emailAddress);
-            var mailMessage = new MailMessage(sender, recipient);
-            mailMessage.Body = message;
-            mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.Subject = "Your submission has been rejected.";
-
-            _client.Send(mailMessage);
-            Console.WriteLine(message);
-        }
-
-        public void NotifyRevision(string emailAddress, string message)
-        {
-            var sender = new MailAddress(_clientAddress);
-            var recipient = new MailAddress(emailAddress);
-            var mailMessage = new MailMessage(sender, recipient);
-            mailMessage.Body = message;
-            mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.Subject = "Your submission needs revisions.";
-
-            _client.Send(mailMessage);
             Console.WriteLine(message);
         }
     }

@@ -29,7 +29,7 @@ namespace Original.Classes
             {
                 _notificationService.NotifyRejection(researcherEmail, "Your submission was rejected");
             }
-            else if (submissionStatus.Length > 0)
+            else if (submissionStatus == "Accepted")
             {
                 _notificationService.NotifyAcceptance(researcherEmail, "Your submission was accepted");
             }

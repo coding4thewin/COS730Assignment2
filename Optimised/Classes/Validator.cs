@@ -6,11 +6,11 @@ namespace Optimised.Classes
     {
         public static bool ValidateFormat(string name, string surname, string researchInstitution, IFormFile file)
         {
-            if (name.Length == 0)
+            if (String.IsNullOrEmpty(name))
                 return false;
-            if (surname.Length == 0)
+            if (String.IsNullOrEmpty(surname))
                 return false;
-            if (researchInstitution.Length == 0)
+            if (String.IsNullOrEmpty(researchInstitution))
                 return false;
             if (file == null)
                 return false;

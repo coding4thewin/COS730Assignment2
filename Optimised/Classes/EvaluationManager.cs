@@ -35,19 +35,8 @@ namespace Optimised.Classes
                 bool hasConsensus = CheckConsensus(scores);
                 string submissionStatus = ApplyRules(average, hasConsensus);
 
-                if (submissionStatus == "Needs revision")
-                {
-                    _notificationService.NotifyRevision(_researcherEmail, "Your submission needs revision");
-                }
-                else if (submissionStatus == "Rejected")
-                {
-                    _notificationService.NotifyRejection(_researcherEmail, "Your submission was rejected");
-                }
-                else if (submissionStatus.Length > 0)
-                {
-                    _notificationService.NotifyAcceptance(_researcherEmail, "Your submission was accepted");
-                }
-
+                _notificationService.NotifySubmissionStatus(submissionStatus, _researcherEmail, "Your submission needs revision");
+                
                 //empty evaluation-related variables for next evaluation
                 AsignedAndFilteredReviewerIds = new HashSet<long>();
                 _reviews = new List<Review>();
