@@ -1,0 +1,22 @@
+﻿@{
+    ViewData["Title"] = "Submit your review";
+}
+
+<div class="text-center">
+    <h1 class="display-4">Submit Your review</h1>
+    <form asp-controller="Reviewer" asp-action="SubmitReview" method="post" enctype="multipart/form-data">
+        <label>
+            Reviewer Id
+            <input type="number" name="reviewerId" />
+        </label>
+        <label>
+            Submission Id
+            <input type="number" name="submissionId" />
+        </label>
+        <label>
+            Score
+            <input type="number" min="0" max="100" name="score" />
+        </label>
+        <button type="submit">Submit</button>
+    </form>
+</div>
