@@ -1,14 +1,14 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Optimised.Classes;
+using Microsoft.Data.SqlClient;
+using Original.Classes;
 
-namespace Optimised.Controllers
+namespace Original.Controllers
 {
     [Route("")]
     public class SubmissionController : Controller
     {
         private readonly string _connectionString;
         private readonly ReviewerManager _reviewerManager;
-        private static NotificationService _notificationService = new NotificationService();
         public SubmissionController(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
@@ -22,22 +22,22 @@ namespace Optimised.Controllers
             return View();
         }
 
+
         [HttpPost("submit")]
-        public async Task<IActionResult> Submit([FromForm] string name, [FromForm] string surname, [FromForm] IFormFile file, [FromForm] string researchInstitution, [FromForm] string email)
+        public async Task<IActionResult> Submit([FromForm] string name, [FromForm] string surname, [FromForm] string researchInstitution, [FromForm] IFormFile file, [FromForm] string email)
         {
             if (Validator.ValidateFormat(name, surname, researchInstitution, file, email))
             {
-                var submission = Submission.Create(file);
-                await Database.Save(submission, _connectionString);
+                long submissionId = await Database.SaveSubmission(file, _connectionString);
 
                 var filteredReviewers = await _reviewerManager.GetAvailableReviewers(_connectionString, researchInstitution); 
 
                 foreach (var reviewer in filteredReviewers)
                 {
-                    await reviewer.AssignReview(submission.Id);
+                    reviewer.AssignReview(submissionId);
                 }
 
-                EvaluationManager.StartEvaluation(filteredReviewers, submission.Id, email, _connectionString);
+                EvaluationManager.StartEvaluation(filteredReviewers, submissionId, email, _connectionString);
                 
 
                 return View("Result");
@@ -46,8 +46,9 @@ namespace Optimised.Controllers
                 return View("Error");
         }
 
+       
+        
 
-
-
+       
     }
 }

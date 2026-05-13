@@ -1,12 +1,11 @@
 ﻿using System.Runtime.CompilerServices;
 
-namespace Optimised.Classes
+namespace Original.Classes
 {
     public class EvaluationManager
     {
         private static Random _random = new Random();
         private static NotificationService _notificationService = new NotificationService();
-        private static Dictionary<string, string> submissionStatusMessage = new Dictionary<string, string> { ["Accepted"] = "Your submission was accepted", ["Rejected"] = "Your submission was rejected", ["Needs revision"] = "Your submission needs revision" };
 
         public static void StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string researcherEmail, string connectionString, bool isUnitTest = false)
         {
@@ -15,16 +14,26 @@ namespace Optimised.Classes
             {
                 double score = SubmitScore(reviewer, isUnitTest);
                 scores.Add(score);
-                var review = Review.Create(submissionId, score, reviewer.Id.Value);
-                Database.Save(review, connectionString);
+                Database.SaveScore(reviewer, score, submissionId, connectionString);
             }
 
             double average = CalculateAverage(scores);
             bool hasConsensus = CheckConsensus(scores);
             string submissionStatus = ApplyRules(average, hasConsensus);
 
-            _notificationService.NotifySubmissionStatus(submissionStatus, researcherEmail, submissionStatusMessage[submissionStatus]);
-       
+            if (submissionStatus == "Needs revision")
+            {
+                _notificationService.NotifyRevision(researcherEmail, "Your submission needs revision");
+            }
+            else if (submissionStatus == "Rejected")
+            {
+                _notificationService.NotifyRejection(researcherEmail, "Your submission was rejected");
+            }
+            else if (submissionStatus == "Accepted")
+            {
+                _notificationService.NotifyAcceptance(researcherEmail, "Your submission was accepted");
+            }
+
         }
 
         private static string ApplyRules(double average, bool hasConsensus)
@@ -67,10 +76,11 @@ namespace Optimised.Classes
             return true;
         }
 
-        public static double SubmitScore(Reviewer reviewer, bool isUnitTest = false)
+        public static double SubmitScore(Reviewer reviewer, bool isUnitTest=false)
         {
             if (isUnitTest)
                 return _random.NextDouble() * 100;
+
             Console.WriteLine($"{reviewer.Name} {reviewer.Surname} (ID: {reviewer.Id})");
             while (true)
             {

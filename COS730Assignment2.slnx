@@ -1,4 +1,6 @@
 <Solution>
+  <Project Path="Optimised.Tests/Optimised.Tests.csproj" Id="06c30323-775b-418c-8d46-cceba84e9d70" />
   <Project Path="Optimised/Optimised.csproj" />
+  <Project Path="Original.Tests/Original.Tests.csproj" Id="2cdaf16d-2b04-4734-ab85-395c0acacc41" />
   <Project Path="Unoptimized/Original.csproj" />
 </Solution>

@@ -26,7 +26,7 @@ namespace Optimised.Classes
             }
             else
             {
-                Console.WriteLine("Message sent");
+                Console.WriteLine("Email sent");
             }
 
         }
@@ -39,7 +39,7 @@ namespace Optimised.Classes
             _client.Credentials = new NetworkCredential(_clientAddress, "ixamrnmusolvjvgi");
         }
 
-        public void NotifySubmissionStatus(string submissionStatus, string emailAddress, string message)
+        public async Task NotifySubmissionStatus(string submissionStatus, string emailAddress, string message)
         {
             var sender = new MailAddress(_clientAddress);
             var recipient = new MailAddress(emailAddress);
@@ -48,23 +48,9 @@ namespace Optimised.Classes
             mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
             mailMessage.Subject = $"Submission Status: {submissionStatus}";
 
-            
+            _client.SendCompleted += new SendCompletedEventHandler(SendCompletedCallback);
 
-            _client.Send(mailMessage);
-
-            Console.WriteLine(message);
-        }
-
-        public void NotifyReviewer(string emailAddress, string message)
-        {
-            var sender = new MailAddress(_clientAddress);
-            var recipient = new MailAddress(emailAddress);
-            var mailMessage = new MailMessage(sender, recipient);
-            mailMessage.Body = message;
-            mailMessage.BodyEncoding = System.Text.Encoding.UTF8;
-            mailMessage.Subject = "A submission awaits your review";
-
-            _client.Send(mailMessage);
+            _client.SendAsync(mailMessage, mailMessage.Subject);
 
             Console.WriteLine(message);
         }
