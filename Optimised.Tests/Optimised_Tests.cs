@@ -34,11 +34,11 @@ namespace Optimised.Tests
             var submission = Submission.Create(testFile);
             await Database.Save(submission, connectionString);
 
-            EvaluationManager.StartEvaluation(submission.Id, email, researchInstitution, connectionString, isUnitTest: true);
+            await EvaluationManager.StartEvaluation(submission.Id, email, researchInstitution, connectionString, isUnitTest: true);
 
             stopwatch.Stop();
 
-            Assert.IsTrue(submission.Id > 0);
+            Assert.IsGreaterThan(0, submission.Id);
             System.Diagnostics.Debug.WriteLine($"Total execution time: {stopwatch.ElapsedMilliseconds}ms");
             System.Diagnostics.Debug.WriteLine($"Total execution time: {stopwatch.Elapsed.TotalSeconds}s");
         }

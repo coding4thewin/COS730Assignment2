@@ -41,11 +41,11 @@ namespace Original.Tests
                 reviewer.AssignReview(submissionId);
             }
 
-            EvaluationManager.StartEvaluation(filteredReviewers, submissionId, email, connectionString, isUnitTest: true);
+           await EvaluationManager.StartEvaluation(filteredReviewers, submissionId, email, connectionString, isUnitTest: true);
 
             stopwatch.Stop();
 
-            Assert.IsTrue(submissionId > 0);
+            Assert.IsGreaterThan(0, submissionId);
             System.Diagnostics.Debug.WriteLine($"Total execution time: {stopwatch.ElapsedMilliseconds}ms");
             System.Diagnostics.Debug.WriteLine($"Total execution time: {stopwatch.Elapsed.TotalSeconds}s");
         }

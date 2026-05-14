@@ -12,6 +12,7 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Original\Original.csproj" />
     <ProjectReference Include="..\Unoptimized\Original.csproj" />
   </ItemGroup>
 
