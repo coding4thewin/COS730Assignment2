@@ -7,16 +7,21 @@ namespace Optimised.Classes
         private static Random _random = new Random();
         private static NotificationService _notificationService = new NotificationService();
         private static Dictionary<string, string> submissionStatusMessage = new Dictionary<string, string> { ["Accepted"] = "Your submission was accepted", ["Rejected"] = "Your submission was rejected", ["Needs revision"] = "Your submission needs revision" };
+        private static ReviewerManager _reviewerManager;
 
-        public static void StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string researcherEmail, string connectionString, bool isUnitTest = false)
+        public static async Task StartEvaluation(long submissionId, string researcherEmail, string researchInstitution, string connectionString, bool isUnitTest = false)
         {
+            _reviewerManager = new ReviewerManager(connectionString);
+
+            var filteredReviewers = await _reviewerManager.GetAvailableReviewers(connectionString, researchInstitution);
+
             var scores = new List<double>();
-            foreach (var reviewer in reviewers)
+            foreach (var reviewer in filteredReviewers)
             {
                 double score = SubmitScore(reviewer, isUnitTest);
                 scores.Add(score);
                 var review = Review.Create(submissionId, score, reviewer.Id.Value);
-                Database.Save(review, connectionString);
+                await Database.Save(review, connectionString);
             }
 
             double average = CalculateAverage(scores);

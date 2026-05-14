@@ -27,13 +27,14 @@ namespace Optimised.Classes
             using SqlConnection connection = new SqlConnection(connectionString);
             await connection.OpenAsync();
 
-            string query = "INSERT INTO Review (SubmissionId, ReviewerId, Complete) VALUES (@SubmissionId, @ReviewerId, @Complete)";
+            string query = "INSERT INTO Review (SubmissionId, ReviewerId, Score, Complete) VALUES (@SubmissionId, @ReviewerId, @Score, @Complete)";
 
             using SqlCommand command = new SqlCommand(query, connection);
 
             command.Parameters.AddWithValue("@SubmissionId", SubmissionId);
             command.Parameters.AddWithValue("@ReviewerId", ReviewerId);
-            command.Parameters.AddWithValue("@Complete", false);
+            command.Parameters.AddWithValue("@Score", Score);
+            command.Parameters.AddWithValue("@Complete", true);
 
             await command.ExecuteNonQueryAsync();
         }

@@ -1,5 +1,4 @@
 ﻿using Microsoft.Data.SqlClient;
-using Optimised.Models;
 
 namespace Optimised.Classes
 {

@@ -6,9 +6,9 @@ namespace Optimised.Classes
     {
         private readonly string _connectionString;
 
-        public ReviewerManager(IConfiguration configuration)
+        public ReviewerManager(string connectionString)
         {
-            _connectionString = configuration.GetConnectionString("DefaultConnection");
+            _connectionString = connectionString;
         }
 
        public async Task<IEnumerable<Reviewer>> GetAvailableReviewers(string connectionString, string researchInstitution)

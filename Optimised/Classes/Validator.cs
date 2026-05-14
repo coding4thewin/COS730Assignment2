@@ -1,6 +1,4 @@
-﻿using Optimised.Models;
-
-namespace Optimised.Classes
+﻿namespace Optimised.Classes
 {
     public class Validator
     {

@@ -7,12 +7,9 @@ namespace Optimised.Controllers
     public class SubmissionController : Controller
     {
         private readonly string _connectionString;
-        private readonly ReviewerManager _reviewerManager;
-        private static NotificationService _notificationService = new NotificationService();
         public SubmissionController(IConfiguration configuration)
         {
             _connectionString = configuration.GetConnectionString("DefaultConnection");
-            _reviewerManager = new ReviewerManager(configuration);
 
         }
 
@@ -30,14 +27,7 @@ namespace Optimised.Controllers
                 var submission = Submission.Create(file);
                 await Database.Save(submission, _connectionString);
 
-                var filteredReviewers = await _reviewerManager.GetAvailableReviewers(_connectionString, researchInstitution); 
-
-                foreach (var reviewer in filteredReviewers)
-                {
-                    await reviewer.AssignReview(submission.Id);
-                }
-
-                EvaluationManager.StartEvaluation(filteredReviewers, submission.Id, email, _connectionString);
+                await EvaluationManager.StartEvaluation(submission.Id, email, researchInstitution, _connectionString);
                 
 
                 return View("Result");
@@ -45,9 +35,5 @@ namespace Optimised.Controllers
             else
                 return View("Error");
         }
-
-
-
-
     }
 }

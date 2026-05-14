@@ -13,11 +13,11 @@ namespace Original.Classes
 
        public async Task<IEnumerable<Reviewer>> GetAvailableReviewers(string connectionString, string researchInstitution)
         {
-            var reviewers = await Database.FetchReviewers(connectionString);
-            reviewers = FilterConflicts(reviewers, researchInstitution);
-            reviewers = CheckWorkload(reviewers);
+            var reviewerList = await Database.FetchReviewers(connectionString);
+            reviewerList = FilterConflicts(reviewerList, researchInstitution);
+            reviewerList = CheckWorkload(reviewerList);
 
-            return reviewers;
+            return reviewerList;
 
         }
 

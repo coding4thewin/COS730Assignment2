@@ -7,7 +7,7 @@ namespace Original.Classes
         private static Random _random = new Random();
         private static NotificationService _notificationService = new NotificationService();
 
-        public static void StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string researcherEmail, string connectionString, bool isUnitTest = false)
+        public static async Task StartEvaluation(IEnumerable<Reviewer> reviewers, long submissionId, string researcherEmail, string connectionString, bool isUnitTest = false)
         {
             var scores = new List<double>();
             foreach (var reviewer in reviewers)
@@ -23,15 +23,15 @@ namespace Original.Classes
 
             if (submissionStatus == "Needs revision")
             {
-                _notificationService.NotifyRevision(researcherEmail, "Your submission needs revision");
+                await _notificationService.NotifyRevision(researcherEmail, "Your submission needs revision");
             }
             else if (submissionStatus == "Rejected")
             {
-                _notificationService.NotifyRejection(researcherEmail, "Your submission was rejected");
+                await _notificationService.NotifyRejection(researcherEmail, "Your submission was rejected");
             }
             else if (submissionStatus == "Accepted")
             {
-                _notificationService.NotifyAcceptance(researcherEmail, "Your submission was accepted");
+                await _notificationService.NotifyAcceptance(researcherEmail, "Your submission was accepted");
             }
 
         }

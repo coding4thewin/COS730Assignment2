@@ -1,5 +1,4 @@
 ﻿using Microsoft.AspNetCore.Mvc;
-using Microsoft.Data.SqlClient;
 using Original.Classes;
 
 namespace Original.Controllers
@@ -37,18 +36,13 @@ namespace Original.Controllers
                     reviewer.AssignReview(submissionId);
                 }
 
-                EvaluationManager.StartEvaluation(filteredReviewers, submissionId, email, _connectionString);
+                await EvaluationManager.StartEvaluation(filteredReviewers, submissionId, email, _connectionString);
                 
 
                 return View("Result");
             }
             else
                 return View("Error");
-        }
-
-       
-        
-
-       
+        } 
     }
 }

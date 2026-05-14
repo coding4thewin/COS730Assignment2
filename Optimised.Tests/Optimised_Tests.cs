@@ -34,15 +34,7 @@ namespace Optimised.Tests
             var submission = Submission.Create(testFile);
             await Database.Save(submission, connectionString);
 
-            var reviewerManager = new ReviewerManager(configuration);
-            var filteredReviewers = await reviewerManager.GetAvailableReviewers(connectionString, researchInstitution);
-
-            foreach (var reviewer in filteredReviewers)
-            {
-                reviewer.AssignReview(submission.Id);
-            }
-
-            EvaluationManager.StartEvaluation(filteredReviewers, submission.Id, email, connectionString, isUnitTest: true);
+            EvaluationManager.StartEvaluation(submission.Id, email, researchInstitution, connectionString, isUnitTest: true);
 
             stopwatch.Stop();
 

@@ -40,13 +40,15 @@ namespace Original.Classes
 
             await connection.OpenAsync();
 
-            var saveQuery = "Update Review SET Score = @Score, Complete = 1 WHERE ReviewerId = @ReviewerId AND SubmissionId = @SubmissionId";
-            using SqlCommand saveCommand = new SqlCommand(saveQuery, connection);
+            string query = "INSERT INTO Review (SubmissionId, ReviewerId, Score, Complete) VALUES (@SubmissionId, @ReviewerId, @Score, @Complete)";
 
-            saveCommand.Parameters.AddWithValue("@Score", score);
-            saveCommand.Parameters.AddWithValue("@ReviewerId", reviewer.Id);
-            saveCommand.Parameters.AddWithValue("@SubmissionId", submissionId);
-            await saveCommand.ExecuteNonQueryAsync();
+            using SqlCommand command = new SqlCommand(query, connection);
+
+            command.Parameters.AddWithValue("@SubmissionId", submissionId);
+            command.Parameters.AddWithValue("@ReviewerId", reviewer.Id);
+            command.Parameters.AddWithValue("@Score", score);
+            command.Parameters.AddWithValue("@Complete", true);
+            await command.ExecuteNonQueryAsync();
         }
         public static async Task<long> SaveSubmission(IFormFile file, string connectionString)
         {
